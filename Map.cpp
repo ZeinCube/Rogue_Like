@@ -19,6 +19,10 @@ void Map::initMap(int row, int col) {
     }
 }
 
+void Map::showWin() {
+    mvaddstr(row / 2, col / 2, "YOU WIN");
+}
+
 void Map::redrawMap() {
     for(int cols = 0; cols < 40; cols++) {
         for(int rows = 0; rows < 40; rows++) {

@@ -3,6 +3,6 @@ project(Rogue_Like)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Rogue_Like main.cpp Map.cpp Map.h Controller.cpp Controller.h Character.h Hero.h Zombie.h)
+add_executable(Rogue_Like main.cpp Map.cpp Map.h Controller.cpp Controller.h Character.h Hero.h Zombie.h Princess.h)
 
 set(CMAKE_CXX_FLAGS "-lncurses")

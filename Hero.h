@@ -1,6 +1,7 @@
 #include "Zombie.h"
 class Hero: public Character {
 public:
+    bool isWin = false;
     bool down = true, up = true, left = true, right = true;
     Hero() {
         hp = 100;
@@ -25,6 +26,9 @@ public:
                 if (hp == 0)
                     is_dead = true;
                 break;
+            case 'P':
+                isWin = true;
+
             default:
                 break;
         }

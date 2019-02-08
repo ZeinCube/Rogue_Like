@@ -11,4 +11,5 @@ class Map {
         void initMap(int row, int col);
         void redrawMap();
         void spawnMob(Character ch);
+        void showWin();
 };
