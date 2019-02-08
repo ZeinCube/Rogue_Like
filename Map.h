@@ -1,11 +1,10 @@
 #include <vector>
-#include "Character.h"
 #include "ncurses.h"
+#include "Hero.h"
 //y x
 using namespace std;
 class Map {
     public:
-        shared_ptr<Hero> hero;
         vector<shared_ptr<Character>> mobs;
         int row, col;
         vector<vector<char>> mapChars;

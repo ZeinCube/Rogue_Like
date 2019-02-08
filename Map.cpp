@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "Map.h"
+#include <sstream>
 
 //CAUTION GOVNO CODE
 
@@ -25,7 +26,6 @@ void Map::redrawMap() {
         }
         addch('\n');
     }
-    mvaddch(hero->x, hero->y, hero->sym);
     for(auto c : mobs) {
         mvaddch(c->x, c->y, c->sym);
     }

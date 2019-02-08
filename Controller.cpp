@@ -6,13 +6,13 @@
 void Controller::init(Map &map1){
     map = map1;
     hero = std::make_shared<Hero>();
-    map.hero = hero;
     map.mobs.push_back(std::make_shared<Zombie>());
+    map.mobs.push_back(hero);
 }
 
 void Controller::listen() {
     while(true) {
-        hero->move(getch());
+        hero->move(getch(), map.mobs);
         map.redrawMap();
     }
 }
@@ -21,14 +21,12 @@ void Controller::run(int sleep_time) {
     std::thread th(&Controller::listen, this);
     while(true) {
         sleep(sleep_time);
-        //check for collides
-        for(auto o : map.mobs) {
-            for(auto a: map.mobs) {
-
-            }
-        }
+        if (hero->is_dead)
+            break;
         for(auto m: map.mobs) {
-            m->move();
+            if(!m->is_dead)
+            m->move(map.mobs);
+            else map.mobs.erase(std::remove(map.mobs.begin(), map.mobs.end(), m));
         }
         map.redrawMap();
     }
