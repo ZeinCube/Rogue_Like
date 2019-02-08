@@ -5,7 +5,7 @@ public:
     Hero() {
         hp = 100;
         sym = 'K';
-        damage = 20;
+        damage = 5;
         x = 20;
         y = 40;
     }

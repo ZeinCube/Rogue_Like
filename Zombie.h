@@ -9,7 +9,7 @@ public:
         sym = 'Z';
         damage = 20;
         x = 30;
-        y = 40;
+        y = 45;
     }
 
     void move(int vec, std::vector<std::shared_ptr<Character>> mobs){
