@@ -26,8 +26,13 @@ void Map::redrawMap() {
         }
         addch('\n');
     }
+    stringstream ss;
     for(auto c : mobs) {
         mvaddch(c->x, c->y, c->sym);
+        ss << c->sym << ": " << c->hp << " ";
     }
+    std::string s = ss.str();
+    const char* str = s.c_str();
+    mvaddstr(row - 1, 1, str);
     refresh();
 }
