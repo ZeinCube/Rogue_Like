@@ -1,4 +1,6 @@
 #include "Zombie.h"
+#include <cstdlib>
+
 class Hero: public Character {
 public:
     bool isWin = false;
@@ -6,9 +8,9 @@ public:
     Hero() {
         hp = 100;
         sym = 'K';
-        damage = 5;
-        x = 20;
-        y = 40;
+        damage = 15;
+        x = 10;
+        y = 10;
     }
 
     void move(std::vector<std::shared_ptr<Character>> mobs){
@@ -17,18 +19,19 @@ public:
 
     void collade(Character &c){
         switch(c.sym) {
-            case 'Z':
-                c.hp -= damage;
-                if(c.hp == 0)
-                    c.is_dead = true;
-                c.isMovable = !c.isMovable;
-                hp -= c.damage;
-                if (hp == 0)
-                    is_dead = true;
-                break;
+        case 'Z': case 'D':
+                if(c.hp > 0) {
+                    c.hp -= damage;
+                    if (c.hp <= 0)
+                        c.is_dead = true;
+                    c.goLeft = !c.goLeft;
+                    hp -= c.damage;
+                    if (hp <= 0)
+                        is_dead = true;
+                    break;
+                }
             case 'P':
                 isWin = true;
-
             default:
                 break;
         }
@@ -76,7 +79,7 @@ public:
                             collade(*m);
                     }
                     if(up) {
-                        if (x > 14)
+                        if (x > 1)
                             x--;
                     }
                     break;
@@ -87,7 +90,7 @@ public:
                             collade(*m);
                     }
                     if(down) {
-                        if (x < 50)
+                        if (x < 37)
                             x++;
                     }
                     break;
@@ -98,24 +101,23 @@ public:
                             collade(*m);
                     }
                     if(right) {
-                        if (y < 58)
+                        if (y < 38)
                             y++;
                     }
                     break;
-
                 case KEY_LEFT:
                     for(auto m : mobs){
                         if(isOnWay(*m, KEY_LEFT))
                             collade(*m);
                     }
                     if(left) {
-                        if (y > 21)
+                        if (y > 1)
                             y--;
                     }
                     break;
-
                 default:
-                    0;
+                    endwin();
+                    exit(0);
             }
         up = down = left = right = true;
     }

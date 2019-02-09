@@ -5,8 +5,8 @@ public:
         hp = 1;
         sym = 'P';
         damage = 0;
-        x = 15;
-        y = 22;
+        x = 1;
+        y = 1;
     }
 
     void move(int vec, std::vector<std::shared_ptr<Character>>){

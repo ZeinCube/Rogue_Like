@@ -2,14 +2,15 @@
 #include <fstream>
 #include "Map.h"
 #include <sstream>
+#include <unistd.h>
 
 //CAUTION GOVNO CODE
 
-void Map::initMap(int row, int col) {
+void Map::initMap(int rows, int cols) {
     char buf;
     mapChars.resize(40);
-    this->row = row;
-    this->col = col;
+    this->rows = rows;
+    this->cols = cols;
     std::ifstream in("map.txt");
     for(int i = 0; i < 40; i++) {
         for(int j = 0; j < 40; j++) {
@@ -20,23 +21,27 @@ void Map::initMap(int row, int col) {
 }
 
 void Map::showWin() {
-    mvaddstr(row / 2, col / 2, "YOU WIN");
+    mvaddstr(rows / 2, cols / 2 - 10, "YOU WIN || Press AnyKey");
 }
 
 void Map::redrawMap() {
-    for(int cols = 0; cols < 40; cols++) {
-        for(int rows = 0; rows < 40; rows++) {
-            mvaddch(((row - 40) / 2) + rows, ((col - 40) / 2) + cols, this->mapChars[cols][rows]);
+    for(int col = 0; col < 40; col++) {
+        for(int row = 0; row < 40; row++) {
+            mvaddch(((rows - 40) / 2) + row, ((cols - 40) / 2) + col, this->mapChars[col][row]);
         }
         addch('\n');
     }
     stringstream ss;
     for(auto c : mobs) {
-        mvaddch(c->x, c->y, c->sym);
-        ss << c->sym << ": " << c->hp << " ";
+        if(!c->is_dead) {
+            int x = (rows - 40) / 2 + c->x;
+            int y = (cols - 40) / 2 + c->y;
+            mvaddch(x, y, c->sym);
+            ss << c->sym << ": " << c->hp << " ";
+        }
     }
     std::string s = ss.str();
     const char* str = s.c_str();
-    mvaddstr(row - 1, 1, str);
+    mvaddstr(rows - 1, 1, str);
     refresh();
 }
