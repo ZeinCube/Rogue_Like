@@ -11,7 +11,7 @@ int main() {
     controller.init(map);
     curs_set(0);
     keypad(stdscr, true);
-    controller.run(1);
+    controller.run();
     endwin();
     return 0;
 }

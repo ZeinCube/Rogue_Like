@@ -1,6 +1,6 @@
 #include <vector>
 #include "ncurses.h"
-#include "Hero.h"
+#include "Character.h"
 //y x
 using namespace std;
 class Map {
@@ -12,4 +12,5 @@ class Map {
         void redrawMap();
         void spawnMob(Character ch);
         void showWin();
+        void showLoose();
 };

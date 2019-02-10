@@ -24,6 +24,10 @@ void Map::showWin() {
     mvaddstr(rows / 2, cols / 2 - 10, "YOU WIN || Press AnyKey");
 }
 
+void Map::showLoose() {
+    mvaddstr(rows / 2, cols / 2 - 10, "YOU LOOSE || Press AnyKey");
+}
+
 void Map::redrawMap() {
     for(int col = 0; col < 40; col++) {
         for(int row = 0; row < 40; row++) {
@@ -37,11 +41,7 @@ void Map::redrawMap() {
             int x = (rows - 40) / 2 + c->x;
             int y = (cols - 40) / 2 + c->y;
             mvaddch(x, y, c->sym);
-            ss << c->sym << ": " << c->hp << " ";
         }
     }
-    std::string s = ss.str();
-    const char* str = s.c_str();
-    mvaddstr(rows - 1, 1, str);
     refresh();
 }

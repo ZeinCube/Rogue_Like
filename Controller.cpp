@@ -2,10 +2,10 @@
 #include <unistd.h>
 #include "ncurses.h"
 #include <thread>
-#include "Princess.h"
-#include "Dragon.h"
+#include "Character.h"
+//#include "Dragon.h"
 
-void Controller::init(Map &map1){
+void Controller::init(Map &map1) {
     map = map1;
     hero = std::make_shared<Hero>();
     map.mobs.emplace_back(std::make_shared<Princess>());
@@ -21,37 +21,33 @@ void Controller::init(Map &map1){
     map.mobs.emplace_back(hero);
 }
 
-void Controller::listen() {
-    while(!hero->isWin && !hero->is_dead) {
-        for(auto it = map.mobs.begin(); it != map.mobs.end(); it++){
-            if(it->get()->is_dead)
-                map.mobs.erase(it);
-        }
-        map.redrawMap();
-        hero->move(getch(), map.mobs);
-        map.redrawMap();
+void Controller::clearMobs() {
+    mut.lock();
+    for (auto it = map.mobs.begin(); it != map.mobs.end(); it++) {
+        if (it->get()->hp <= 0)
+            map.mobs.erase(it);
     }
+    map.redrawMap();
+    mut.unlock();
 }
 
-void Controller::run(int sleep_time) {
-    std::thread th(&Controller::listen, this);
-    th.detach();
-    while(!hero->isWin && !hero->is_dead) {
-        for(auto it = map.mobs.begin(); it != map.mobs.end(); it++){
-            if(it->get()->is_dead)
-                if(it->get()->sym != 'K')
-                    map.mobs.erase(it);
+void Controller::run() {
+    timeout(100);
+    while (!hero->isWin && hero->hp > 0) {
+        clearMobs();
+        hero->move(getch(), map.mobs);
+        if (hero->hp <= 0)
+            map.showLoose();
+        for (auto m: map.mobs) {
+            if (m->hp > 0)
+                m->move(map.mobs);
         }
-        sleep(sleep_time);
-        if (hero->is_dead)
-            break;
-        for(auto m: map.mobs) {
-            if(!m->is_dead)
-            m->move(map.mobs);
-        }
-        map.redrawMap();
     }
-    if(!hero->is_dead)
-    map.showWin();
+    if (hero->hp <= 0) {
+        map.showLoose();
+    } else {
+        map.showWin();
+    }
+    timeout(4000);
     getch();
 }
